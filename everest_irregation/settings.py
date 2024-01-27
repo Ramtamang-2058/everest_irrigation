@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from datetime import timedelta
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-7ue3axkzd11!8m)2^fp&6_!p4torl127jh&h8h%_-3qjx@_a&k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['76da-2400-1a00-b020-36ed-3250-3ed6-384e-19d1.ngrok-free.app', 'localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1', 'everesttestirr.oznepalservices.com.au']
 
+CSRF_TRUSTED_ORIGINS = ['https://everesttestirr.oznepalservices.com.au',]
 
 # Application definition
 
@@ -38,9 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'everest_broker',
-    'everest_api',
-    'rest_framework',
-    'rest_framework_simplejwt',
+    'everest_components',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +70,13 @@ TEMPLATES = [
         },
     },
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+}
 
 WSGI_APPLICATION = 'everest_irregation.wsgi.application'
 
@@ -126,18 +132,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # ... any other authentication classes you are using
-    ),
-}
-
-# Set the token expiration time (e.g., 1 day for access tokens and 7 days for refresh tokens)
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-}
