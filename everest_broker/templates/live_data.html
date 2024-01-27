@@ -1,0 +1,43 @@
+<!-- everest_broker/templates/live_data.html -->
+<!-- ... existing code ... -->
+<body>
+    <h1>Live Data Display</h1>
+
+    <ul id="received-data">
+        {% for data in received_data %}
+            <li>{{ data }}</li>
+        {% endfor %}
+    </ul>
+
+    <button id="delete-data-btn">Delete All Data</button>
+
+    <script>
+        // Update data every 2 seconds (adjust as needed)
+        setInterval(function() {
+            fetch('/')
+                .then(response => response.text())
+                .then(html => {
+                    // Extract the list items from the received HTML
+                    var tempList = document.createElement('ul');
+                    tempList.innerHTML = html;
+                    var receivedDataList = tempList.querySelector('#received-data');
+                    
+                    // Update only the list items in the original ul
+                    document.getElementById('received-data').innerHTML = receivedDataList.innerHTML;
+                });
+        }, 1000);
+    
+        // Add event listener for the delete button
+        document.getElementById('delete-data-btn').addEventListener('click', function() {
+            fetch('/delete_all_data/', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Delete response:', data);
+                // You can handle the response as needed (e.g., show a confirmation message)
+            })
+            .catch(error => console.error('Error deleting data:', error));
+        });
+    </script>
+</body>
